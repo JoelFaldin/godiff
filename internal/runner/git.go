@@ -2,6 +2,7 @@ package runner
 
 import (
 	"fmt"
+	"godiff/internal/parser"
 	"os/exec"
 )
 
@@ -14,5 +15,5 @@ func Gitdiff(location string) {
 		return
 	}
 
-	fmt.Println(string(output))
+	parser.Parser(output)
 }
