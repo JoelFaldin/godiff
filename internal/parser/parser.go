@@ -5,14 +5,30 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 )
+
+type parser struct {
+	err error
+}
+
+func (p *parser) atoi(s string) int {
+	if p.err != nil {
+		return 0
+	}
+
+	val, err := strconv.Atoi(s)
+	if err != nil {
+		p.err = err
+	}
+
+	return val
+}
 
 func Parser(rawDiff []byte) {
 	reader := bytes.NewReader(rawDiff)
 	scanner := bufio.NewScanner(reader)
-
-	fmt.Println(string(rawDiff))
 
 	var diffs []FileDiff
 	var currentFile *FileDiff
@@ -57,17 +73,11 @@ func Parser(rawDiff []byte) {
 				b := n[3:]
 				newCount, _, _ := strings.Cut(b, " ")
 
-				// currentHunk.OldStart, err = strconv.Atoi(oldStart)
-				// currentHunk.OldCount, err2 = strconv.Atoi(oldCount)
-				// currentHunk.NewStart, err3 = strconv.Atoi(newStart)
-				// currentHunk.NewCount, err4 = strconv.Atoi(newCount)
-				fmt.Println(oldStart)
-				fmt.Println(oldCount)
-				fmt.Println(newStart)
-				fmt.Println(newCount)
-				// oldCount := 0
-				// newStart := 0
-				// newCount := 0
+				p := &parser{}
+				currentHunk.OldStart = p.atoi(oldStart)
+				currentHunk.OldCount = p.atoi(oldCount)
+				currentHunk.NewStart = p.atoi(newStart)
+				currentHunk.NewCount = p.atoi(newCount)
 			}
 
 		case strings.HasPrefix(line, "+"):
