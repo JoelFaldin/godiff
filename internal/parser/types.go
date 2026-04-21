@@ -14,10 +14,10 @@ type Line struct {
 }
 
 type Hunk struct {
-	OldStart int
-	OldCount int
-	NewStart int
-	NewCount int
+	OldStart string
+	OldCount string
+	NewStart string
+	NewCount string
 	Lines    []Line
 }
 

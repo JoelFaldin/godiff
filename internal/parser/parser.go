@@ -3,26 +3,8 @@ package parser
 import (
 	"bufio"
 	"bytes"
-	"strconv"
 	"strings"
 )
-
-type parser struct {
-	err error
-}
-
-func (p *parser) atoi(s string) int {
-	if p.err != nil {
-		return 0
-	}
-
-	val, err := strconv.Atoi(s)
-	if err != nil {
-		p.err = err
-	}
-
-	return val
-}
 
 func Parser(rawDiff []byte) []FileDiff {
 	reader := bytes.NewReader(rawDiff)
@@ -71,11 +53,10 @@ func Parser(rawDiff []byte) []FileDiff {
 				b := n[3:]
 				newCount, _, _ := strings.Cut(b, " ")
 
-				p := &parser{}
-				currentHunk.OldStart = p.atoi(oldStart)
-				currentHunk.OldCount = p.atoi(oldCount)
-				currentHunk.NewStart = p.atoi(newStart)
-				currentHunk.NewCount = p.atoi(newCount)
+				currentHunk.OldStart = oldStart
+				currentHunk.OldCount = oldCount
+				currentHunk.NewStart = newStart
+				currentHunk.NewCount = newCount
 			}
 
 		case strings.HasPrefix(line, "+"):
