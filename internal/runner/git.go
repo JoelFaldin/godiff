@@ -2,11 +2,10 @@ package runner
 
 import (
 	"fmt"
-	"godiff/internal/parser"
 	"os/exec"
 )
 
-func Gitdiff(location string) {
+func Gitdiff(location string) (rawDiff []byte) {
 	cmd := exec.Command("git", "diff", location)
 	output, err := cmd.Output()
 
@@ -15,5 +14,5 @@ func Gitdiff(location string) {
 		return
 	}
 
-	parser.Parser(output)
+	return output
 }

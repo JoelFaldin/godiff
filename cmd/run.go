@@ -4,6 +4,8 @@ Copyright © 2026 Joel Faldin joelfaldin@gmail.com
 package cmd
 
 import (
+	"godiff/internal/parser"
+	"godiff/internal/renderer"
 	"godiff/internal/runner"
 
 	"github.com/spf13/cobra"
@@ -28,7 +30,9 @@ to quickly create a Cobra application.`,
 			location = "."
 		}
 
-		runner.Gitdiff(location)
+		diff := runner.Gitdiff(location)
+		parsed := parser.Parser(diff)
+		renderer.Render(parsed)
 	},
 }
 

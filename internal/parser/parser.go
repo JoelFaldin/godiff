@@ -3,8 +3,6 @@ package parser
 import (
 	"bufio"
 	"bytes"
-	"encoding/json"
-	"fmt"
 	"strconv"
 	"strings"
 )
@@ -26,7 +24,7 @@ func (p *parser) atoi(s string) int {
 	return val
 }
 
-func Parser(rawDiff []byte) {
+func Parser(rawDiff []byte) []FileDiff {
 	reader := bytes.NewReader(rawDiff)
 	scanner := bufio.NewScanner(reader)
 
@@ -114,6 +112,9 @@ func Parser(rawDiff []byte) {
 		diffs = append(diffs, *currentFile)
 	}
 
-	f, _ := json.MarshalIndent(diffs, "", " ")
-	fmt.Println(string(f))
+	if currentFile.OldPath == currentFile.NewPath {
+		currentFile.IsNew = false
+	}
+
+	return diffs
 }
