@@ -2,4 +2,7 @@
 
 !*.*
 !LICENSE
+
 !cmd
+!/internal
+!/internal/*
