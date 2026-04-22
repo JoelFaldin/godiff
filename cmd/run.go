@@ -4,7 +4,7 @@ Copyright © 2026 Joel Faldin joelfaldin@gmail.com
 package cmd
 
 import (
-	"fmt"
+	"godiff/internal/errors"
 	"godiff/internal/parser"
 	"godiff/internal/renderer"
 	"godiff/internal/runner"
@@ -34,7 +34,7 @@ to quickly create a Cobra application.`,
 		diff, err := runner.Gitdiff(location)
 
 		if err != nil {
-			fmt.Println(err)
+			errors.Print("error while running git diff", err.Error())
 			return
 		}
 
