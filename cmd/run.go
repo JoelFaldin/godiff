@@ -4,6 +4,7 @@ Copyright © 2026 Joel Faldin joelfaldin@gmail.com
 package cmd
 
 import (
+	"fmt"
 	"godiff/internal/parser"
 	"godiff/internal/renderer"
 	"godiff/internal/runner"
@@ -30,7 +31,13 @@ to quickly create a Cobra application.`,
 			location = "."
 		}
 
-		diff := runner.Gitdiff(location)
+		diff, err := runner.Gitdiff(location)
+
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+
 		parsed := parser.Parser(diff)
 		renderer.Render(parsed)
 	},

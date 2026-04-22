@@ -47,13 +47,14 @@ func Render(res []parser.FileDiff) {
 			for l := range hunk.Lines {
 				line := hunk.Lines[l]
 
-				if line.Type == 0 {
+				switch line.Type {
+				case 0:
 					reader := contextLine.Render(line.Content)
 					fmt.Println(reader)
-				} else if line.Type == 1 {
+				case 1:
 					reader := deletedLine.Render(line.Content)
 					fmt.Println(reader)
-				} else {
+				default:
 					reader := addedLine.Render(line.Content)
 					fmt.Println(reader)
 				}
