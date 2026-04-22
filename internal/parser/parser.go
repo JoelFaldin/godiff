@@ -6,6 +6,16 @@ import (
 	"strings"
 )
 
+func finalizeFile(f *FileDiff) {
+	if f.NewPath == "/dev/null" {
+		f.IsDeleted = true
+	}
+
+	if f.OldPath == "/dev/null" {
+		f.IsNew = true
+	}
+}
+
 func Parser(rawDiff []byte) []FileDiff {
 	reader := bytes.NewReader(rawDiff)
 	scanner := bufio.NewScanner(reader)
@@ -20,7 +30,12 @@ func Parser(rawDiff []byte) []FileDiff {
 		switch {
 		case strings.HasPrefix(line, "diff --git"):
 			if currentFile != nil {
+				if currentHunk != nil {
+					currentFile.Hunks = append(currentFile.Hunks, *currentHunk)
+				}
+				finalizeFile(currentFile)
 				diffs = append(diffs, *currentFile)
+				currentHunk = nil
 			}
 			currentFile = &FileDiff{}
 
@@ -83,18 +98,15 @@ func Parser(rawDiff []byte) []FileDiff {
 				})
 			}
 		}
-	}
 
-	if currentHunk != nil && currentFile != nil {
-		currentFile.Hunks = append(currentFile.Hunks, *currentHunk)
 	}
 
 	if currentFile != nil {
+		if currentHunk != nil {
+			currentFile.Hunks = append(currentFile.Hunks, *currentHunk)
+		}
+		finalizeFile(currentFile)
 		diffs = append(diffs, *currentFile)
-	}
-
-	if currentFile.OldPath == currentFile.NewPath {
-		currentFile.IsNew = false
 	}
 
 	return diffs

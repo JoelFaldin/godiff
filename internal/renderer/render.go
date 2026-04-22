@@ -29,7 +29,13 @@ func Render(res []parser.FileDiff) {
 		Faint(true)
 
 	for i := range res {
-		header := fileHeader.Render(res[i].NewPath)
+		path := res[i].NewPath
+
+		if res[i].NewPath == "+++ /dev/null" {
+			path = res[i].OldPath
+		}
+
+		header := fileHeader.Render(path)
 		fmt.Println(header)
 
 		for r := range res[i].Hunks {
