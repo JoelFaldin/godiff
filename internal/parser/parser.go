@@ -56,22 +56,17 @@ func Parser(rawDiff []byte) []FileDiff {
 				}
 				currentHunk = &Hunk{}
 
-				// Processing old start lines:
-				s := line[4:]
-				oldStart, _, _ := strings.Cut(s, ",")
-				v := line[7:]
-				oldCount, _, _ := strings.Cut(v, " ")
+				fields := strings.Fields(line)
 
-				// Processing newstart lines:
-				_, n, _ := strings.Cut(line, "+")
-				newStart, _, _ := strings.Cut(n, ",")
-				b := n[3:]
-				newCount, _, _ := strings.Cut(b, " ")
+				h := fields[1]
+				res1 := strings.Split(h, ",")
+				currentHunk.OldStart = strings.TrimPrefix(res1[0], "-")
+				currentHunk.OldCount = res1[1]
 
-				currentHunk.OldStart = oldStart
-				currentHunk.OldCount = oldCount
-				currentHunk.NewStart = newStart
-				currentHunk.NewCount = newCount
+				s := fields[2]
+				res2 := strings.Split(s, ",")
+				currentHunk.NewStart = strings.TrimPrefix(res2[0], "+")
+				currentHunk.NewCount = res2[1]
 			}
 
 		case strings.HasPrefix(line, "+"):

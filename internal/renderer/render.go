@@ -42,10 +42,10 @@ func Render(res []parser.FileDiff) {
 			hunk := res[i].Hunks[r]
 
 			hunkHeader1 := hunkHeader.Render("@@ ")
-			oldStartHeader := hunkHeader.Render(hunk.OldStart)
-			oldCountHeader := hunkHeader.Render(hunk.OldCount)
-			newStartHeader := hunkHeader.Render(hunk.NewStart)
-			newCountHeader := hunkHeader.Render(hunk.NewCount)
+			oldStartHeader := deletedLine.Render(hunk.OldStart)
+			oldCountHeader := deletedLine.Render(hunk.OldCount)
+			newStartHeader := addedLine.Render(hunk.NewStart)
+			newCountHeader := addedLine.Render(hunk.NewCount)
 			hunkHeader2 := hunkHeader.Render("@@ ")
 
 			fmt.Println(hunkHeader1, oldStartHeader, oldCountHeader, newStartHeader, newCountHeader, hunkHeader2)
