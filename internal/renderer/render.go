@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
-func Render(res []parser.FileDiff) {
+func Render(res []parser.FileDiff, insertions, deletions int) {
 	// f, _ := json.MarshalIndent(res, "", " ")
 	// result := string(f)
 	// fmt.Println(result)
@@ -66,5 +66,8 @@ func Render(res []parser.FileDiff) {
 				}
 			}
 		}
+
 	}
+	message := fmt.Sprintf("%d files changed, %d insertions(+), %d deletions (-)", len(res), insertions, deletions)
+	fmt.Println(hunkHeader.Render(message))
 }

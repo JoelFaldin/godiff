@@ -38,8 +38,8 @@ to quickly create a Cobra application.`,
 			return
 		}
 
-		parsed := parser.Parser(diff)
-		renderer.Render(parsed)
+		parsed, insertions, deletions := parser.Parser(diff)
+		renderer.Render(parsed, insertions, deletions)
 	},
 }
 

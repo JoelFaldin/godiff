@@ -16,9 +16,12 @@ func finalizeFile(f *FileDiff) {
 	}
 }
 
-func Parser(rawDiff []byte) []FileDiff {
+func Parser(rawDiff []byte) (res []FileDiff, ins, dels int) {
 	reader := bytes.NewReader(rawDiff)
 	scanner := bufio.NewScanner(reader)
+
+	insertions := 0
+	deletions := 0
 
 	var diffs []FileDiff
 	var currentFile *FileDiff
@@ -75,6 +78,7 @@ func Parser(rawDiff []byte) []FileDiff {
 					Type:    Added,
 					Content: strings.TrimPrefix(line, "+"),
 				})
+				insertions++
 			}
 
 		case strings.HasPrefix(line, "-"):
@@ -83,6 +87,7 @@ func Parser(rawDiff []byte) []FileDiff {
 					Type:    Removed,
 					Content: strings.TrimPrefix(line, "-"),
 				})
+				deletions++
 			}
 
 		default:
@@ -104,5 +109,5 @@ func Parser(rawDiff []byte) []FileDiff {
 		diffs = append(diffs, *currentFile)
 	}
 
-	return diffs
+	return diffs, insertions, deletions
 }
