@@ -4,7 +4,6 @@ Copyright © 2026 Joel Faldin joelfaldin@gmail.com
 package cmd
 
 import (
-	"fmt"
 	"godiff/internal/errors"
 	"godiff/internal/parser"
 	"godiff/internal/renderer"
@@ -36,7 +35,6 @@ var runCmd = &cobra.Command{
 		var diff []byte
 		var error error
 
-		fmt.Println(flag)
 		if flag {
 			diff, error = runner.GitDiffStaged(location)
 		} else {
@@ -57,5 +55,5 @@ func init() {
 	rootCmd.AddCommand(runCmd)
 
 	// Local flags (only apply to godiff run):
-	runCmd.Flags().Bool("staged", true, "Show differences between files already added to staging area (via git add)")
+	runCmd.Flags().Bool("staged", false, "Show differences between files already added to staging area (via git add)")
 }
