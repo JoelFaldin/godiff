@@ -4,6 +4,7 @@ Copyright © 2026 Joel Faldin joelfaldin@gmail.com
 package cmd
 
 import (
+	"fmt"
 	"godiff/internal/errors"
 	"godiff/internal/parser"
 	"godiff/internal/renderer"
@@ -16,25 +17,34 @@ import (
 var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Execute the basic command of godiff",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long:  `Run and format git diff on the terminal.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		location := ""
+		flag, err := cmd.Flags().GetBool("staged")
 
+		if err != nil {
+			errors.Print("error processing flag", err.Error())
+			return
+		}
+
+		location := ""
 		if len(args) != 0 {
 			location = args[0]
 		} else {
 			location = "."
 		}
 
-		diff, err := runner.Gitdiff(location)
+		var diff []byte
+		var error error
 
-		if err != nil {
-			errors.Print("error while running git diff", err.Error())
+		fmt.Println(flag)
+		if flag {
+			diff, error = runner.GitDiffStaged(location)
+		} else {
+			diff, error = runner.Gitdiff(location)
+		}
+
+		if error != nil {
+			errors.Print("error while running git diff", error.Error())
 			return
 		}
 
@@ -46,13 +56,6 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(runCmd)
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// runCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// runCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// Local flags (only apply to godiff run):
+	runCmd.Flags().Bool("staged", true, "Show differences between files already added to staging area (via git add)")
 }
