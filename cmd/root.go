@@ -13,9 +13,8 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "godiff",
 	Short: "A git diff cli tool alternative built on Go!",
-	Long: `	A git diff CLI tool alternative built on Go!
-	Show a clearer version of git diff,
-	with options and colors.
+	Long: `godiff is a prettier alternative to git diff, built in Go!
+	With colored output, line numbers and change summaries.
 	`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
