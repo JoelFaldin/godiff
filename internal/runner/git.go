@@ -5,6 +5,7 @@ import (
 	"os/exec"
 )
 
+// Format default output
 func Gitdiff(location string) ([]byte, error) {
 	cmd := exec.Command("git", "diff", location)
 	output, err := cmd.Output()

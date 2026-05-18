@@ -7,11 +7,8 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// Print output to the terminal using colors
 func Render(res []parser.FileDiff, insertions, deletions int) {
-	// f, _ := json.MarshalIndent(res, "", " ")
-	// result := string(f)
-	// fmt.Println(result)
-
 	fileHeader := lipgloss.NewStyle().
 		Bold(true).
 		Underline(true)
@@ -23,7 +20,7 @@ func Render(res []parser.FileDiff, insertions, deletions int) {
 		Foreground(lipgloss.Color("42"))
 
 	deletedLine := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("196"))
+		Foreground(lipgloss.Color("203"))
 
 	contextLine := lipgloss.NewStyle().
 		Faint(true)

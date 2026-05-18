@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// Decide if the file was created or deleted
 func finalizeFile(f *FileDiff) {
 	if f.NewPath == "/dev/null" {
 		f.IsDeleted = true
@@ -16,6 +17,7 @@ func finalizeFile(f *FileDiff) {
 	}
 }
 
+// Process git diff ouput, save data into struct
 func Parser(rawDiff []byte) (res []FileDiff, ins, dels int) {
 	reader := bytes.NewReader(rawDiff)
 	scanner := bufio.NewScanner(reader)

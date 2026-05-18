@@ -5,6 +5,7 @@ import (
 	"os/exec"
 )
 
+// Format output with the --staged flag from git
 func GitDiffStaged(location string) ([]byte, error) {
 	cmd := exec.Command("git", "diff", "--staged", location)
 	output, err := cmd.Output()
